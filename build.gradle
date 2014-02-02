@@ -1,7 +1,7 @@
 apply plugin: 'java'
 
 description = 'The eGym Logging System'
-buildDir = 'target-gradle'
+buildDir = 'target'
 
 repositories {
 	mavenRepo url: 'https://nexus.int.egym.de/content/groups/public/'
