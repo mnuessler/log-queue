@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'maven'
 
 description = 'The eGym Logging System'
 buildDir = 'target'
@@ -18,4 +19,14 @@ dependencies {
 
 	testCompile group: 'org.testng', name: 'testng', version: '6.8'
 	testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
+}
+
+task createPom << {
+	pom {
+		project {
+			groupId 'de.egym'
+			artifactId 'log-queue'
+			version '1.0'
+		}
+	}.writeTo("target/pom.xml")
 }
