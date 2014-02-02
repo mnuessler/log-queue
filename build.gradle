@@ -1,0 +1,21 @@
+apply plugin: 'java'
+
+description = 'The eGym Logging System'
+buildDir = 'target-gradle'
+
+repositories {
+	mavenRepo url: 'https://nexus.int.egym.de/content/groups/public/'
+}
+
+dependencies {
+	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.2'
+	compile group: 'joda-time', name: 'joda-time', version: '2.2'
+	compile group: 'com.google.inject', name: 'guice', version: '3.0'
+	compile group: 'com.google.code.guice', name: 'guice-servlet', version: '3.0'
+	compile group: 'javax.servlet', name: 'servlet-api', version: '2.5'
+	compile group: 'net.jcip', name: 'jcip-annotations-gwt', version: '1.0.1.egym'
+	compile group: 'commons-lang', name: 'commons-lang', version: '2.5'
+
+	testCompile group: 'org.testng', name: 'testng', version: '6.8'
+	testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
+}
