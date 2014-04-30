@@ -1,8 +1,14 @@
 apply plugin: 'java'
 apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 description = 'The eGym Logging System'
 buildDir = 'target'
+
+allprojects {
+	sourceCompatibility = 1.7
+	targetCompatibility = 1.7
+}
 
 repositories {
 	mavenRepo url: 'https://nexus.int.egym.de/content/groups/public/'
@@ -21,12 +27,46 @@ dependencies {
 	testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
 }
 
-task createPom << {
-	pom {
-		project {
+task sourcesJar(type: Jar, dependsOn: classes) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+	classifier = 'javadoc'
+	from javadoc.destinationDir
+}
+
+artifacts {
+	archives sourcesJar
+	archives javadocJar
+}
+
+publishing {
+	publications {
+		maven(MavenPublication) {
 			groupId 'de.egym'
 			artifactId 'log-queue'
-			version '1.1'
+			version '1.2-SNAPSHOT'
+
+			from components.java
+
+			artifact sourcesJar {
+				classifier "sources"
+			}
+
+			artifact javadocJar {
+				classifier "javadoc"
+			}
 		}
-	}.writeTo("target/pom.xml")
+	}
+	repositories {
+		maven {
+			url 'https://nexus.int.egym.de/content/repositories/egym-snapshot/'
+			credentials {
+				username "${nexusUser}"
+				password "${nexusPassword}"
+			}
+		}
+	}
 }

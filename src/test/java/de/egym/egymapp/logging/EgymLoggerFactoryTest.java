@@ -5,6 +5,7 @@
  */
 package de.egym.egymapp.logging;
 
+import de.egym.egymapp.logging.slf4j.EgymLoggerFactory;
 import org.slf4j.Logger;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

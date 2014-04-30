@@ -3,13 +3,18 @@
  *
  * Copyright © 2013 eGym GmbH
  */
-package de.egym.egymapp.logging;
+package de.egym.egymapp.logging.slf4j;
 
+import de.egym.egymapp.logging.EgymLogLevel;
+import de.egym.egymapp.logging.EgymLogQueue;
+import de.egym.egymapp.logging.EgymLogRecord;
+import de.egym.egymapp.logging.slf4j.EgymLogger;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -47,7 +52,7 @@ public class EgymLoggerTest {
 		verify(logQueue).log(logRecordCaptor.capture());
 
 		final EgymLogRecord logRecord = logRecordCaptor.getValue();
-		assertEquals(logRecord.getLogLevel(), EgymLogLevel.INFO);
+		Assert.assertEquals(logRecord.getLogLevel(), EgymLogLevel.INFO);
 		assertEquals(logRecord.getMessage(), message);
 		assertEquals(logRecord.getSource(), logger);
 

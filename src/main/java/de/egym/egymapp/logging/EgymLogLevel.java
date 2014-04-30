@@ -11,6 +11,6 @@ package de.egym.egymapp.logging;
  * <em>The order defines the priority (from lowest to highest).</em>
  * </p>
  */
-enum EgymLogLevel {
+public enum EgymLogLevel {
 	TRACE, DEBUG, INFO, WARN, ERROR
 }

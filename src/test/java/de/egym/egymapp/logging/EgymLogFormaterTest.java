@@ -5,9 +5,7 @@
  */
 package de.egym.egymapp.logging;
 
-import de.egym.egymapp.logging.EgymLogFormatter;
-import de.egym.egymapp.logging.EgymLogLevel;
-import de.egym.egymapp.logging.EgymLogRecord;
+import de.egym.egymapp.logging.formatter.EgymLogFormatterUtil;
 import org.joda.time.DateTime;
 import org.testng.annotations.Test;
 
@@ -36,7 +34,7 @@ public class EgymLogFormaterTest {
 	@Test
 	public void testFormatTimestamp() {
 		final DateTime timestamp = new DateTime(2013, 12, 15, 17, 23, 42, 73);
-		final String str = EgymLogFormatter.formatTimestamp(timestamp);
+		final String str = EgymLogFormatterUtil.formatTimestamp(timestamp);
 
 		assertEquals(str, "2013-12-15 17:23:42.073");
 	}
@@ -56,17 +54,17 @@ public class EgymLogFormaterTest {
 	@Test
 	public void testFormatLogLevel2() {
 		for (EgymLogLevel logLevel : EgymLogLevel.values()) {
-			assertNotNull(EgymLogFormatter.formatLogLevel(logLevel));
+			assertNotNull(EgymLogFormatterUtil.formatLogLevel(logLevel));
 		}
 	}
 
 	private void testFormatLogLevel(EgymLogLevel logLevel, String expectedLabel) {
-		final String label = EgymLogFormatter.formatLogLevel(logLevel);
+		final String label = EgymLogFormatterUtil.formatLogLevel(logLevel);
 		assertEquals(label, expectedLabel);
 	}
 
 	private void testFormatLogRecord(EgymLogRecord logRecord) {
-		final String output = EgymLogFormatter.formatLogRecord(logRecord, "\t");
+		final String output = EgymLogFormatterUtil.formatLogRecord(logRecord, "\t");
 		System.out.println(output);
 	}
 

@@ -3,13 +3,18 @@
  *
  * Copyright © 2013 eGym GmbH
  */
-package de.egym.egymapp.logging;
+package de.egym.egymapp.logging.slf4j;
 
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Collections;
 
 import com.google.inject.Inject;
+import de.egym.egymapp.logging.EgymLogLevel;
+import de.egym.egymapp.logging.EgymLogLevels;
+import de.egym.egymapp.logging.EgymLogQueue;
+import de.egym.egymapp.logging.EgymLogRecord;
+import de.egym.egymapp.logging.formatter.EgymLogFormatterUtil;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
@@ -23,6 +28,9 @@ public class EgymLogger implements Logger {
 	/** Defines the log level threshold. Everything below this threshold will be ignored. */
 	private static final EgymLogLevel THRESHOLD = EgymLogLevel.DEBUG;
 
+	/**
+	 * Defines logging thresholds based on logger names. This is useful to ignore certain packages which log excessively in the DEBUG level.
+	 */
 	private static final Map<String, EgymLogLevel> THRESHOLDS;
 
 	/** The log queue. Statically injected by Guice. This is null in the early phase of the application initialization. */
@@ -38,6 +46,7 @@ public class EgymLogger implements Logger {
 	static {
 		final Map<String, EgymLogLevel> thresholds = new HashMap<String, EgymLogLevel>();
 		// To avoid excessive logging we ignore everything from Hibernate which is below INFO.
+		// TODO: This should be moved into the pipeline configuration.
 		thresholds.put("org.hibernate", EgymLogLevel.INFO);
 		THRESHOLDS = Collections.unmodifiableMap(thresholds);
 	}
@@ -408,7 +417,7 @@ public class EgymLogger implements Logger {
 
 		if (logQueue == null) {
 			// Fallback if log queue isn't initialized yet.
-			System.out.println(EgymLogFormatter.formatLogRecord(logRecord, "[NO LOG QUEUE] "));
+			System.out.println(EgymLogFormatterUtil.formatLogRecord(logRecord, "[NO LOG QUEUE] "));
 		} else {
 			logQueue.log(logRecord);
 		}

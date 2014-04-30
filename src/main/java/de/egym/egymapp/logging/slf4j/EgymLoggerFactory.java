@@ -3,8 +3,9 @@
  *
  * Copyright © 2013 eGym GmbH
  */
-package de.egym.egymapp.logging;
+package de.egym.egymapp.logging.slf4j;
 
+import de.egym.egymapp.logging.slf4j.EgymLogger;
 import net.jcip.annotations.ThreadSafe;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;

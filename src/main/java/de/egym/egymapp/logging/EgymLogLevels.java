@@ -5,7 +5,19 @@
  */
 package de.egym.egymapp.logging;
 
-class EgymLogLevels {
+/**
+ * {@link EgymLogLevel} related utilities.
+ */
+public class EgymLogLevels {
+	/** The default log level threshold for everything happening <em>outside of a request</em>. */
+	private static final EgymLogLevel THRESHOLD_DEFAULT = EgymLogLevel.INFO;
+
+	/** The default log level threshold for everything happening <em>in a request</em>. */
+	private static final EgymLogLevel THRESHOLD_REQUEST = EgymLogLevel.INFO;
+
+	/** The threshold within a request which triggers the <em>audit mode</em>. See /README.md for details. */
+	private static final EgymLogLevel THRESHOLD_REQUEST_AUDIT = EgymLogLevel.WARN;
+
 	private EgymLogLevels() {
 		throw new AssertionError("Do not instantiate");
 	}
@@ -19,7 +31,7 @@ class EgymLogLevels {
 	 *            the threshold. Must not be null.
 	 * @return True if the record's log level is equal to or exceeds the threshold.
 	 */
-	static boolean hasSufficientLogLevel(EgymLogRecord logRecord, EgymLogLevel thresholdLogLevel) {
+	public static boolean hasSufficientLogLevel(EgymLogRecord logRecord, EgymLogLevel thresholdLogLevel) {
 		if (logRecord == null) {
 			throw new IllegalArgumentException("logRecord");
 		}
@@ -39,7 +51,7 @@ class EgymLogLevels {
 	 *            the threshold. Must not be null.
 	 * @return True if the record's log level is equal to or exceeds the threshold.
 	 */
-	static boolean isSufficientLogLevel(EgymLogLevel logLevel, EgymLogLevel thresholdLogLevel) {
+	public static boolean isSufficientLogLevel(EgymLogLevel logLevel, EgymLogLevel thresholdLogLevel) {
 		if (logLevel == null) {
 			throw new IllegalArgumentException("logLevel");
 		}
@@ -48,5 +60,49 @@ class EgymLogLevels {
 		}
 
 		return logLevel.ordinal() >= thresholdLogLevel.ordinal();
+	}
+
+	/**
+	 * Calculates the maximum log level which appears in the log messages of the specified request descriptor. If the descriptor contains no
+	 * log message, the lowest log level (TRACE) is returned.
+	 *
+	 * @param requestLogRecord
+	 *            the request descriptor to analyze. Must not be null.
+	 * @return the maximum log level discovered. Never null.
+	 */
+	public static EgymLogLevel calcMaxLogLevel(EgymLogRequestRecord requestLogRecord) {
+		int maxLogLevelOrdinal = 0;
+
+		if (requestLogRecord.getLogRecords() != null) {
+			for (EgymLogRecord logRecord : requestLogRecord.getLogRecords()) {
+				final EgymLogLevel logLevel = logRecord.getLogLevel();
+
+				final int logLevelOrdinal = logLevel.ordinal();
+				maxLogLevelOrdinal = Math.max(maxLogLevelOrdinal, logLevelOrdinal);
+			}
+		}
+
+		return EgymLogLevel.values()[maxLogLevelOrdinal];
+	}
+
+	/**
+	 * @return The default log level threshold for everything happening <em>outside of a request</em>.
+	 */
+	public static EgymLogLevel getThresholdDefault() {
+		return THRESHOLD_DEFAULT;
+	}
+
+	/**
+	 * @return The default log level threshold for everything happening <em>in a request</em>.
+	 */
+	public static EgymLogLevel getThresholdRequest() {
+		return THRESHOLD_REQUEST;
+	}
+
+	/**
+	 * @return The threshold within a request which triggers the <em>audit mode</em>. See /README.md for details.
+	 */
+	public static EgymLogLevel getThresholdRequestAudit() {
+		return THRESHOLD_REQUEST_AUDIT;
 	}
 }

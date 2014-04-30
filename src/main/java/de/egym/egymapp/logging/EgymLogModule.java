@@ -7,13 +7,16 @@ package de.egym.egymapp.logging;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
-import de.egym.egymapp.logging.writer.EgymLogWriterModule;
+import de.egym.egymapp.logging.slf4j.EgymLogger;
 
+/**
+ * The central module of the egym-log system. Your application needs to install this module in order for egym-log to work correctly.
+ */
 public class EgymLogModule extends AbstractModule {
 	@Override
 	protected void configure() {
-		install(new EgymLogWriterModule());
 		bind(EgymLogQueue.class).to(EgymLogQueueImpl.class).in(Singleton.class);
+		bind(EgymLogPipelineService.class);
 		requestStaticInjection(EgymLogger.class);
 	}
 }

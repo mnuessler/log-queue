@@ -5,12 +5,19 @@
  */
 package de.egym.egymapp.logging.writer;
 
+import com.google.inject.Singleton;
+import net.jcip.annotations.ThreadSafe;
+
 /**
  * Writes all log messages to stdout.
  */
-class EgymConsoleLogWriter implements EgymLogWriter {
+@Singleton
+@ThreadSafe
+public class EgymLogStdOutWriter implements EgymLogWriter<String> {
 	@Override
 	public void write(String msg) {
-		System.out.println(msg);
+		if (msg != null) {
+			System.out.println(msg);
+		}
 	}
 }

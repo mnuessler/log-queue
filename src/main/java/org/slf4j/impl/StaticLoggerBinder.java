@@ -5,7 +5,7 @@
  */
 package org.slf4j.impl;
 
-import de.egym.egymapp.logging.EgymLoggerFactory;
+import de.egym.egymapp.logging.slf4j.EgymLoggerFactory;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.spi.LoggerFactoryBinder;
 

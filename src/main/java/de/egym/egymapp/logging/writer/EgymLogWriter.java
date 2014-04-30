@@ -7,13 +7,20 @@ package de.egym.egymapp.logging.writer;
 
 /**
  * Used to write log messages.
+ *
+ * <p>
+ * All implementations must be <em>thread-safe</em>. It is recommended to make implementations immutable.
+ * </p>
+ *
+ * @param <T>
+ *            the log message type.
  */
-public interface EgymLogWriter {
+public interface EgymLogWriter<T> {
 	/**
 	 * Invoked for each log message.
 	 *
-	 * @param msg
-	 *            the log message. Must not be null.
+	 * @param logMessage
+	 *            the log message. May be null.
 	 */
-	void write(String msg);
+	void write(T logMessage);
 }

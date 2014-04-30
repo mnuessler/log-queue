@@ -3,8 +3,10 @@
  *
  * Copyright © 2013 eGym GmbH
  */
-package de.egym.egymapp.logging;
+package de.egym.egymapp.logging.formatter;
 
+import de.egym.egymapp.logging.EgymLogLevel;
+import de.egym.egymapp.logging.EgymLogRecord;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -15,16 +17,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Used to format log messages.
+ * Utilities used to format log messages.
  */
-class EgymLogFormatter {
+public class EgymLogFormatterUtil {
 	private static final DateTimeFormatter FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
 	private static final Map<EgymLogLevel, String> logLevelLabels = createLogLevelLabels();
 
+	private EgymLogFormatterUtil() {
+		throw new AssertionError("Do not instantiate");
+	}
+
 	/**
-	 * Formats the given {@link EgymLogRecord} in a nice, structured, human readable format. Uses the specified indentation string to indent
-	 * the log message. All lines except the first one are indented by twice the indentation string.
+	 * Formats the given {@link de.egym.egymapp.logging.EgymLogRecord} in a nice, structured, human readable format. Uses the specified
+	 * indentation string to indent the log message. All lines except the first one are indented by twice the indentation string.
 	 *
 	 * @param logRecord
 	 *            the record to format. Must not be null.
@@ -89,7 +95,7 @@ class EgymLogFormatter {
 	 *            must not be null.
 	 * @return the formatted log level.
 	 */
-	static String formatLogLevel(EgymLogLevel logLevel) {
+	public static String formatLogLevel(EgymLogLevel logLevel) {
 		if (logLevel == null) {
 			throw new IllegalArgumentException("logLevel must not be null");
 		}
@@ -137,7 +143,7 @@ class EgymLogFormatter {
 	 *            the value to format. Must not be null.
 	 * @param length
 	 *            the output length. Must not be smaller than the logLevel name's length.
-	 * @return
+	 * @return the formatted log level label.
 	 */
 	private static String formatLogLevelLabel(EgymLogLevel logLevel, int length) {
 		if (logLevel == null) {

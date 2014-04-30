@@ -5,6 +5,12 @@
  */
 package de.egym.egymapp.logging;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import de.egym.egymapp.logging.config.EgymLogPipelineModule;
+import de.egym.egymapp.logging.decorator.EgymLogNoOpDecorator;
+import de.egym.egymapp.logging.formatter.EgymLogPlainTextFormatter;
+import de.egym.egymapp.logging.slf4j.EgymLogger;
 import de.egym.egymapp.logging.writer.EgymLogWriter;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
@@ -29,14 +35,26 @@ public class EgymLogQueueImplTest {
 	@Mock
 	private EgymLogger logger;
 
-	private EgymLogQueueImpl logQueue;
+	private Injector injector;
+
+	private EgymLogQueue logQueue;
+
+
 
 	@BeforeMethod
 	public void init() {
 		DateTimeZone.setDefault(DateTimeZone.UTC);
 		MockitoAnnotations.initMocks(this);
+
+		injector = Guice.createInjector(new EgymLogModule(), new EgymLogPipelineModule() {
+			@Override
+			protected void configure() {
+				decorateWith(EgymLogNoOpDecorator.class).formatWith(EgymLogPlainTextFormatter.class).writeTo(InMemoryWriter.class);
+			}
+		});
+
 		when(logger.getName()).thenReturn(LOGGER_NAME);
-		logQueue = new EgymLogQueueImpl(logWriter);
+		logQueue = injector.getInstance(EgymLogQueue.class);
 	}
 
 	@AfterMethod
@@ -63,7 +81,7 @@ public class EgymLogQueueImplTest {
 	public void testWithRequest() {
 		DateTimeUtils.setCurrentMillisFixed(1387139060000L);
 
-		logQueue.startRequest("Some Header");
+		logQueue.startRequest();
 
 		final DateTime timestamp = new DateTime(2013, 12, 15, 17, 23, 42);
 		logQueue.log(new EgymLogRecord(timestamp, logger, EgymLogLevel.INFO, "Hello World", null));
@@ -93,7 +111,7 @@ public class EgymLogQueueImplTest {
 	public void testWithRequestDebug() {
 		DateTimeUtils.setCurrentMillisFixed(1387139060000L);
 
-		logQueue.startRequest("Some Header");
+		logQueue.startRequest();
 
 		final DateTime timestamp = new DateTime(2013, 12, 15, 17, 23, 42);
 		logQueue.log(new EgymLogRecord(timestamp, logger, EgymLogLevel.INFO, "Hello World", null));
@@ -123,7 +141,7 @@ public class EgymLogQueueImplTest {
 	public void testWithRequestAudit() {
 		DateTimeUtils.setCurrentMillisFixed(1387139060000L);
 
-		logQueue.startRequest("Some Header");
+		logQueue.startRequest();
 
 		final DateTime timestamp = new DateTime(2013, 12, 15, 17, 23, 42);
 		logQueue.log(new EgymLogRecord(timestamp, logger, EgymLogLevel.INFO, "Hello World", null));
