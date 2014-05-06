@@ -5,11 +5,12 @@
  */
 package org.slf4j.impl;
 
-import de.egym.egymapp.logging.slf4j.EgymLoggerFactory;
+import static org.testng.AssertJUnit.*;
+
 import org.slf4j.ILoggerFactory;
 import org.testng.annotations.Test;
 
-import static org.testng.AssertJUnit.*;
+import de.egym.logqueue.slf4j.EgymLoggerFactory;
 
 /**
  * Tests {@link StaticLoggerBinder}.

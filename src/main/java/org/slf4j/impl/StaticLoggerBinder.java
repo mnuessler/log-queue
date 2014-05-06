@@ -5,9 +5,10 @@
  */
 package org.slf4j.impl;
 
-import de.egym.egymapp.logging.slf4j.EgymLoggerFactory;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.spi.LoggerFactoryBinder;
+
+import de.egym.logqueue.slf4j.EgymLoggerFactory;
 
 /**
  * This binds the custom egym logging framework. See {@link EgymLoggerFactory}. This class must be exactly in this package for slf4j to find
