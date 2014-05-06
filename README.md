@@ -1,10 +1,10 @@
 Request Based Log Queue
 =======================
 
-This little library provides an slf4j compatible logging system which
-allows to log on a request level by queueing all log outputs while a
-request is in progress and then flushing them all at once as soon as
-the request is done.
+This little library provides an [slf4j](http://www.slf4j.org/)
+compatible logging system which allows to log on a request level by
+queueing all log outputs while a request is in progress and then
+flushing them all at once as soon as the request is done.
 
 This approach is heavily inspired by the
 [Optimal Logging](http://googletesting.blogspot.de/2013/06/optimal-logging.html)
