@@ -1,6 +1,8 @@
 Request Based Log Queue
 =======================
 
+[![Build Status](https://travis-ci.org/egymgmbh/log-queue.svg?branch=master)](https://travis-ci.org/egymgmbh/log-queue)
+
 This little library provides an [slf4j](http://www.slf4j.org/)
 compatible logging system which allows to log on a request level by
 queueing all log outputs while a request is in progress and then
