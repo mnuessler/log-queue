@@ -13,7 +13,6 @@ import org.joda.time.Seconds;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -52,7 +51,7 @@ public class EgymLoggerTest {
 		verify(logQueue).log(logRecordCaptor.capture());
 
 		final EgymLogRecord logRecord = logRecordCaptor.getValue();
-		Assert.assertEquals(logRecord.getLogLevel(), EgymLogLevel.INFO);
+		assertEquals(logRecord.getLogLevel(), EgymLogLevel.INFO);
 		assertEquals(logRecord.getMessage(), message);
 		assertEquals(logRecord.getSource(), logger);
 
@@ -78,5 +77,47 @@ public class EgymLoggerTest {
 		assertEquals(new EgymLogger("org.hibernate.bar").isSufficientLogLevel(EgymLogLevel.INFO), true);
 		assertEquals(new EgymLogger("org.hibernate.bar").isSufficientLogLevel(EgymLogLevel.WARN), true);
 		assertEquals(new EgymLogger("org.hibernate.bar").isSufficientLogLevel(EgymLogLevel.ERROR), true);
+	}
+
+	@Test
+	public void testMessageFormattingWithOneArgument() {
+		logger = new EgymLogger("foo");
+		EgymLogger.logQueue = logQueue;
+
+		logger.debug("format string with arg1={}", "value1");
+
+		ArgumentCaptor<EgymLogRecord> argument = ArgumentCaptor.forClass(EgymLogRecord.class);
+		verify(logQueue).log(argument.capture());
+
+		EgymLogRecord logRecord = argument.getValue();
+		assertEquals(logRecord.getMessage(), "format string with arg1=value1");
+	}
+
+	@Test
+	public void testMessageFormattingWithTwoArguments() {
+		logger = new EgymLogger("foo");
+		EgymLogger.logQueue = logQueue;
+
+		logger.debug("format string with arg1={} and arg2={}", "value1", "value2");
+
+		ArgumentCaptor<EgymLogRecord> logRecordCaptor = ArgumentCaptor.forClass(EgymLogRecord.class);
+		verify(logQueue).log(logRecordCaptor.capture());
+
+		EgymLogRecord logRecord = logRecordCaptor.getValue();
+		assertEquals(logRecord.getMessage(), "format string with arg1=value1 and arg2=value2");
+	}
+
+	@Test
+	public void testMessageFormattingWithThreeArguments() {
+		logger = new EgymLogger("foo");
+		EgymLogger.logQueue = logQueue;
+
+		logger.debug("format string with arg1={} and arg2={} and arg3={}", "value1", "value2", "value3");
+
+		ArgumentCaptor<EgymLogRecord> logRecordCaptor = ArgumentCaptor.forClass(EgymLogRecord.class);
+		verify(logQueue).log(logRecordCaptor.capture());
+
+		EgymLogRecord logRecord = logRecordCaptor.getValue();
+		assertEquals(logRecord.getMessage(), "format string with arg1=value1 and arg2=value2 and arg3=value3");
 	}
 }
