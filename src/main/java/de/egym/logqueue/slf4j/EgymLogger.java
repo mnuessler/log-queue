@@ -474,6 +474,6 @@ public class EgymLogger implements Logger {
 	 * @return the formatted log message.
 	 */
 	private String format(String format, Object... args) {
-		return MessageFormatter.format(format, args).getMessage();
+		return MessageFormatter.arrayFormat(format, args).getMessage();
 	}
 }
