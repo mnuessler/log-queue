@@ -1,7 +1,7 @@
 Request Based Log Queue
 =======================
 
-[![Build Status](https://travis-ci.org/egymgmbh/log-queue.svg?branch=master)](https://travis-ci.org/egymgmbh/log-queue)
+[![Build Status](https://travis-ci.org/mnuessler/log-queue.svg?branch=coverall)](https://travis-ci.org/mnuessler/log-queue) [![Coverage Status](https://img.shields.io/coveralls/mnuessler/log-queue.svg)](https://coveralls.io/r/mnuessler/log-queue)
 
 This little library provides an [slf4j](http://www.slf4j.org/)
 compatible logging system which allows to log on a request level by
